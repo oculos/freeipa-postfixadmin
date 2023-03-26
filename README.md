@@ -15,6 +15,8 @@ Yes. [FreeIPA-mailserver](https://github.com/Carbenium/freeipa-mailserver) is an
 
 I am writing this plugin to replicate as much as possible my current experience with Postfix Admin.
 
+The main idea is that users can have a mailbox, but mailboxes can be created for non-users. Domains, virtual domains and aliases are not part of groups, hosts or other native FreeIPA objects.
+
 ### Description of the elements:
 
 This plugin creates a few `objectClasses` so that few attributes present on FreeIPA are reused, so that other plugins might not use the same components here. A notable exception is the attributeType `status`, which is used to enable/disable items such as domains, mailboxes and aliases.
