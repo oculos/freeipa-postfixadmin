@@ -57,3 +57,7 @@ Here are some screenshots for how it looks so far:
 <img width="1098" alt="Screenshot 2023-03-26 at 21 52 36" src="https://user-images.githubusercontent.com/6791923/227801392-e3fa0176-2655-49bf-8e00-1585650dc53f.png">
 
 <img width="1099" alt="Screenshot 2023-03-26 at 21 52 24" src="https://user-images.githubusercontent.com/6791923/227801398-efd5becd-051f-4a9a-9286-5b7964fa195e.png">
+
+### Thank you
+
+Thanks to the authors of the [FreeIPA-mailserver](https://github.com/Carbenium/freeipa-mailserver) and [IPA-dhcp](https://github.com/Turgon37/freeipa-plugin-dhcp) plugin authors, who gave me lots of inspiration on how to get started with this plugin.
