@@ -1,0 +1,75 @@
+dn: cn=schema
+attributetypes: ( 1.3.6.1.4.1.60062.2.4 NAME 'maxAliases'
+  DESC 'Max number of aliases'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.3 NAME 'domainQuota'
+  DESC 'Quota for a postfix domain'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.2 NAME 'isBackupMx'
+  DESC 'Boolean for the type of domain - backup MX or not'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.6 NAME 'realDomain'
+  DESC 'Boolean for the type of domain - backup MX or not'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.7 NAME 'postfixMailAddress'
+  DESC 'Postfix address for a mailbox'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.8 NAME 'postfixMailAlias'
+  DESC 'Boolean for the type of domain - backup MX or not'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.9 NAME 'postfixMailDestination'
+  DESC 'Mailbox address for mail delivery to an alias'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+attributetypes: ( 1.3.6.1.4.1.60062.2.10 NAME 'defaultDomain'
+  DESC 'Default domain name for internal ipa users mailboxes'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+-
+objectclasses: ( 1.3.6.1.4.1.60062.1.1
+  NAME 'postfixDomain' SUP top STRUCTURAL
+  MUST ( cn )
+  MAY ( maxAliases $ domainQuota $ isBackupMx $ status )
+  X-ORIGIN 'A postfix Domain for mailboxes' )
+-
+objectclasses: ( 1.3.6.1.4.1.60062.1.2
+  NAME 'postfixVirtualDomain' SUP top STRUCTURAL
+  MUST ( uid $ realDomain $ status )
+  X-ORIGIN 'A postfix Alias Domain' )
+-
+objectclasses: ( 1.3.6.1.4.1.60062.1.3
+  NAME 'postfixMailBox' SUP person STRUCTURAL
+  MAY ( uid $ cn $ status $ postfixMailAddress $ mailQuota $ userPassword $ givenName $ sn $ displayName)
+  X-ORIGIN 'A postfix Mailbox' )
+-
+objectclasses: ( 1.3.6.1.4.1.60062.1.4
+  NAME 'postfixAlias' SUP top STRUCTURAL
+  MUST ( uid $ status $ postfixMailAlias $ postfixMailDestination )
+  X-ORIGIN 'A postfix Mail alias' )
+-
+objectclasses: ( 1.3.6.1.4.1.60062.1.5
+  NAME 'postfixConfig' SUP top STRUCTURAL
+  MUST ( uid  )
+  MAY ( defaultDomain )
+  X-ORIGIN 'A postfix Default domain name for internal ipa users' )
