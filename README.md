@@ -32,9 +32,7 @@ Ipa users can have only one mailbox (`postfixMailAddress`) attribute. When addin
 
 ### To-Do
 
-- Finishing the UI for adding a mailbox to new and existing users
-- Adding validations everywhere (for example, so that a new user mailbox won't be a duplicate of an existing non-user mailbox). Validations are also needed regarding e-mail addresses.
-- Streamlined installation and installation instructions;
+- Hiding "Create mailbox" and "Delete mailbox" on the users' Actions menu, when the user already has or doesn't have a mailbox.
 - Documentation on how to configure Postfix and Dovecot to query the right objects.
 - Permission configurations. As of now there is no permission configuration for the mailboxes, domains, etc. Only admins can edit Postfix configurations.
 

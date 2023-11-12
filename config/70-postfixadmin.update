@@ -1,0 +1,12 @@
+# Subtree to store mailserver configuration
+dn: cn=mailserver,cn=etc,$SUFFIX
+default: objectclass: top
+default: objectclass: nsContainer
+
+# Subtree to store mailserver configuration
+dn: cn=postfixadmin,cn=mailserver,cn=etc,$SUFFIX
+default: objectclass: top
+default: objectclass: nsContainer
+
+dn: uid=config,cn=postfixadmin,cn=mailserver,cn=etc,$SUFFIX
+add: objectclass: postfixConfig

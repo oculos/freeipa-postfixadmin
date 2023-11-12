@@ -1,8 +1,0 @@
-# Missing default objects, such as
-# cn=postfix,cn=mailserver,cn=etc
-# Also missing:
-# adding the `postfixMailBox` objectClass to default ipa users
-dn: uid=config,cn=postfix,cn=mailserver,cn=etc,dc=med-lo,dc=test
-changetype: add
-objectclass: postfixConfig
-uid: config
