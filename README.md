@@ -3,7 +3,7 @@ A [FreeIPA](https://www.freeipa.org) plugin for mimicking PostfixAdmin functiona
 
 ## Warning!
 
-This is not a ready product, and some functionality is missing. Even when that functionality is added, not sure if everything one would expect from this plugin is implemented. This was written with small deployments in mind. 
+This plugin was written to help me to get away from saving my mail accounts data on MySQL. It isn't therefore a full feature product, and it was developed mostly to give me a GUI for managing mail accounts. Some functionality that you might be looking for, or some consistency checks when modifying data directly on LDAP, might be missing. Bear that in mind if you start using it, specially in large environments.
 
 ### Description
 
