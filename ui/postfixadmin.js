@@ -210,10 +210,10 @@ define(
           }
          ],
       adder_dialog: 
-        {
+			{  
            fields: 
              [
-               { name: 'uid',},
+               { name: 'uid',tooltip: "Use '*' for a catchall address."},
                { $type: 'multivalued', name: 'postfixmaildestination'},
                { $type: 'checkbox',name : 'status' }
              ]

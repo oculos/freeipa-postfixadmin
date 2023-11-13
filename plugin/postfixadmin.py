@@ -262,7 +262,8 @@ class alias(LDAPObject):
             ),
         Bool('status',
             cli_name='active',
-            label=_('Active')
+            label=_('Active'),
+            default=False
              )
     )
 
@@ -301,10 +302,12 @@ class alias_add(LDAPCreate):
 
 
     def pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **options):
-
         entry_attrs['objectClass'] = ['postfixAlias']
+        if entry_attrs['uid'] == '*':
+            entry_attrs['postfixMailAlias'] = "@"+keys[0]
+        else:
         #entry_attrs['cn'] = entry_attrs['givenName']+' '+entry_attrs['sn']
-        entry_attrs['postfixMailAlias'] = entry_attrs['uid']+"@"+keys[0]
+            entry_attrs['postfixMailAlias'] = entry_attrs['uid']+"@"+keys[0]
         #exists = ldap.find_entry_by_attr('postfixMailAddress',entry_attrs['postfixMailAddress'],'postfixMailbox')
         #if exists:
         #    raise errors.ValidationError(name='mailbox', error=_('The e-mail address already exists.'))
