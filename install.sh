@@ -7,5 +7,7 @@ cp ui/postfixadmin.js /usr/share/ipa/ui/js/plugins/postfixadmin/postfixadmin.js
 
 
 ipa-ldap-updater --schema-file "/usr/share/ipa/updates/70-postfixadmin.ldif"
+ipa-server-upgrade
+ipactl start
 ipa config-mod --addattr=ipaUserObjectClasses=postfixMailBox
 systemctl restart httpd

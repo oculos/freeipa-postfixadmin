@@ -35,6 +35,18 @@ class domain(LDAPObject):
     search_attributes = [ 'cn' ]
     label = _('Domains')
     label_singular = _('Domain')
+    managed_permissions = {
+           'System: Read Domain Data': {
+              
+               'ipapermbindruletype': 'all',
+               'ipapermtarget': DN( ('cn', 'postfixadmin'),('cn', 'mailserver'), ('cn', 'etc')),
+               'replaces_global_anonymous_aci': True,
+               'ipapermright': {'read', 'search', 'compare'},
+               'ipapermdefaultattr': {
+                   'cn', 'objectclass','postfixDomain'
+               }
+           }
+           }
 
     takes_params = (
         Str('cn',
@@ -135,6 +147,20 @@ class mailbox(LDAPObject):
     search_attributes = [ 'uid','cn','status' ,'postfixMailAddress']
     label = _('Mailboxes')
     label_singular = _('Mailbox')
+    managed_permissions = {
+           'System: Read Mailbox data': {
+              
+               'ipapermbindruletype': 'all',
+               'ipapermtarget': DN(('cn', 'postfixadmin'),('cn', 'mailserver'), ('cn', 'etc'),api.env.basedn),
+               
+               'ipapermright': {'read', 'search', 'compare'},
+               'ipapermdefaultattr': {
+                   'cn', 'objectclass','postfixMailAddress','mailquota','status','uid'
+                   
+               },
+                'default_privileges': {'Postfixadmin Readers'}
+           }
+           }
 
     takes_params = (
         Str('uid',
@@ -245,6 +271,21 @@ class alias(LDAPObject):
     ]
     #password_attributes = [('userPassword','userpassword')]
 #    container_dn = container_dn
+    managed_permissions = {
+           'System: Read Alias Data': {
+              
+               'ipapermbindruletype': 'all',
+               'ipapermtarget': DN(('cn', 'postfixadmin'),('cn', 'mailserver'), ('cn', 'etc'),api.env.basedn),
+               
+               'ipapermright': {'read', 'search', 'compare'},
+               'ipapermdefaultattr': {
+                   'cn', 'objectclass',
+                   'postfixMailAlias', 'postfixMailDestination','uid','status'
+               },
+               'default_privileges': {'Postfixadmin Readers'}
+              
+           }
+           }
     permission_filter_objectclasses = ["postfixAlias"]
     search_attributes = [ 'uid','cn','status' ,'postfixMailAlias','postfixMailDestination']
     label = _('Aliases')
@@ -270,7 +311,7 @@ class alias(LDAPObject):
 
 @register()
 class alias_mod(LDAPUpdate):
-    __doc__ = _('Modify Mailbox attributes')
+    __doc__ = _('Modify Alias attributes')
 
     def pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **options):
         attrs = ldap.get_entry(dn)
@@ -318,90 +359,7 @@ class alias_add(LDAPCreate):
     def post_callback(self, ldap, dn, entry_attrs, *keys, **options):
         return dn
 
-@register()
-class virtualdomain(LDAPObject):
-    """
-    Virtual domains - domain aliases
-    """
-    parent_object = 'domain'
-    object_name = _('Virtual domains')
-    object_class = ['postfixVirtualDomain']
-    default_attributes = [
-        'uid', 'status'
-    ]
-    container_dn = DN(('cn', 'postfixadmin'), ('cn', 'mailserver'), ('cn', 'etc'))
-    permission_filter_objectclasses = ["postfixVirtualDomain"]
-    search_attributes = [ 'uid','realDomain','status' ]
-    label = _('Alias domains')
-    label_singular = _('Alias domain')
-
-    takes_params = (
-        Str('uid',
-            cli_name='alias',
-            label=_('Alias domain'),
-            primary_key = True
-            ),
-        Bool('status',
-            cli_name='active',
-            label=_('Active'),
-            default=False
-             )
-    )
-
-
-@register()
-class virtualdomain_mod(LDAPUpdate):
-    __doc__ = _('Modify Postfix configuration')
-
-    def pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **options):
-        if 'uid' in entry_attrs:
-                try:
-                    validate_domain_name(entry_attrs['uid'])
-                except ValueError:
-                    raise errors.ValidationError(name='uid', error=_('Invalid domain name format'))
-
-        return dn
-
-@register()
-class virtualdomain_show(LDAPRetrieve):
-    __doc__ = _('Show Postfix configuration')
-
-
-
-@register()
-class virtualdomain_find(LDAPSearch):
-    __doc__ = _('Search Domains');
-    msg_summary = ngettext(
-        '%(count)d Domain matched',
-        '%(count)d Domains matched', 0
-    )
-
-@register()
-class virtualdomain_del(LDAPDelete):
-    __doc__ = _('Delete a virtual domain.');
-    msg_summary = _('Deleted virtual domain %(value)s')
-
-@register()
-class virtualdomain_add(LDAPCreate):
-    __doc__ = _('Create a new Domain.')
-    msg_summary = _('Created the domain %(value)s.')
-
-
-    def pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **options):
-        entry_attrs['objectClass'] = ['postfixVirtualDomain']
-        entry_attrs['realDomain'] = keys[0]
-        if 'uid' in entry_attrs:
-                try:
-                    validate_domain_name(entry_attrs['uid'])
-                except ValueError:
-                    raise errors.ValidationError(name='cn', error=_('Invalid domain name format'))
-
-        return dn
-
-
-    def post_callback(self, ldap, dn, entry_attrs, *keys, **options):
-        return dn
-
+    
 @register()
 class configuration(LDAPObject):
     """
@@ -466,16 +424,13 @@ user.takes_params += (
         )
 	
 
-user.default_attributes = user.default_attributes + ['postfixmailaddress','mailquota','status']
+user.default_attributes.extend(['postfixmailaddress','mailquota','status'])
 
 def useradd_pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **options):
     #add_missing_object_class(ldap, 'postfixMailBox', dn, entry_attrs, update=False)
     config = ldap.find_entry_by_attr('uid','config','postfixConfig')
     #entry_attrs['objectClass'].append('postfixMailBox')	
     if 'createmailbox' in options:
-        print (entry_attrs['uid'])
-        print (entry_attrs)
-        print ("The attribute exists!")
         if options['createmailbox']:
             address = entry_attrs['uid']+'@'+config['defaultDomain'][0]
             exists = None
@@ -491,6 +446,17 @@ def useradd_pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **optio
 user_add.register_pre_callback(useradd_pre_callback)#
 
 
+user.managed_permissions.update({
+    'System: Read User Attributes': {
+        'ipapermbindruletype': 'all',
+        'ipapermright': {'read', 'search', 'compare'},
+        'ipapermdefaultattr': {
+            'postfixMailAddress', 'status', 'mailquota'
+        }
+    }
+    })
+    
+    
 @register()
 class user_create_mailbox(LDAPUpdate):
 
@@ -498,6 +464,14 @@ class user_create_mailbox(LDAPUpdate):
         config = ldap.find_entry_by_attr('uid','config','postfixConfig')
         found_user = ldap.get_entry(dn)
         if 'postfixMailAddress' not in found_user:
+            address = found_user['uid'][0]+'@'+config['defaultDomain'][0]
+            exists = None
+            try:    
+                exists = ldap.find_entry_by_attr('postfixMailAddress',address,'postfixMailbox')
+            except:
+               pass
+            if exists:
+                raise errors.ValidationError(name='mailbox', error=_('The e-mail address already exists.'))
             
             entry_attrs['postfixMailAddress'] = found_user['uid'][0]+'@'+config['defaultDomain'][0]
         return dn
@@ -509,6 +483,7 @@ class user_delete_mailbox(LDAPUpdate):
         config = ldap.find_entry_by_attr('uid','config','postfixConfig')
         found_user = ldap.get_entry(dn)
         if 'postfixMailAddress' in found_user:
+            
             
             entry_attrs['postfixMailAddress'] = None
         return dn

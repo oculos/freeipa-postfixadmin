@@ -1,6 +1,3 @@
-// Copyright © 2016 Jeffery Harrell <jefferyharrell@gmail.com>
-// See file 'LICENSE' for use and warranty information.
-//
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -123,7 +120,7 @@ define(
                           }
             }
                    ]
-        },
+        }/*
         {
           $type: 'nested_search',
           facet_group: 'virtualdomainsfacetgroup',
@@ -145,7 +142,7 @@ define(
                  }
             }
                    ]
-         }
+         }*/
      ],
      adder_dialog: 
        {
@@ -219,7 +216,7 @@ define(
              ]
          }
   }
-
+/*
   exp.virtualdomains_spec =  
 	  {
        name: 'virtualdomain',
@@ -245,7 +242,7 @@ define(
              ]
          }
   };
-
+*/
   exp.mod_user_spec = function (entity) 
 	  {
 			let facet = get_item_by_attrval(entity.facets, '$type', 'details');
@@ -313,7 +310,7 @@ define(
             e.register({type: 'domain', spec: exp.list_of_domains_spec});
             e.register({type: 'mailbox', spec: exp.mailboxes_spec});
             e.register({type: 'alias', spec: exp.aliases_spec});
-            e.register({type: 'virtualdomain', spec: exp.virtualdomains_spec});
+           // e.register({type: 'virtualdomain', spec: exp.virtualdomains_spec});
             e.register({type: 'configuration', spec: exp.configuration_spec});
            
 
@@ -331,8 +328,8 @@ define(
               {entity: 'configuration'},
               {entity: 'domain',
               children: [{entity: 'mailbox',hidden: true},
-                         {entity: 'alias',hidden: true},
-                         {entity: 'virtualdomain',hidden: true}
+              {entity: 'alias',hidden: true}
+                        // {entity: 'virtualdomain',hidden: true}
                         ]
               }
 
