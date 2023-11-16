@@ -267,7 +267,7 @@ class alias(LDAPObject):
     object_name = _('Aliases configuration')
     object_class = ['postfixAlias']
     default_attributes = [
-        'uid','cn','postfixMailAlias','status','postfixMailDestination'
+        'uid','cn','postfixMailAlias','status','postfixMailAddress'
     ]
     #password_attributes = [('userPassword','userpassword')]
 #    container_dn = container_dn
@@ -280,14 +280,14 @@ class alias(LDAPObject):
                'ipapermright': {'read', 'search', 'compare'},
                'ipapermdefaultattr': {
                    'cn', 'objectclass',
-                   'postfixMailAlias', 'postfixMailDestination','uid','status'
+                   'postfixMailAlias', 'postfixMailAddress','uid','status'
                },
                'default_privileges': {'Postfixadmin Readers'}
               
            }
            }
     permission_filter_objectclasses = ["postfixAlias"]
-    search_attributes = [ 'uid','cn','status' ,'postfixMailAlias','postfixMailDestination']
+    search_attributes = [ 'uid','cn','status' ,'postfixMailAlias','postfixMailAddress']
     label = _('Aliases')
     label_singular = _('Aliases')
 
@@ -297,7 +297,7 @@ class alias(LDAPObject):
             label=_('Alias'),
             primary_key = True
             ),
-        Str('postfixmaildestination+',
+        Str('postfixmailaddress+',
             cli_name='mailbox',
             label=_('Mailbox'),
             ),

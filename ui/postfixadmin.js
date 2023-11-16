@@ -200,7 +200,7 @@ define(
              fields: 
                [
                   { name: 'postfixmailalias', read_only: true, label: "Alias"},
-                  { $type: 'multivalued', name: 'postfixmaildestination'},
+                  { $type: 'multivalued', name: 'postfixmailaddress'},
                   //  { $type: 'password', name: 'userpassword', readonly: true},
                   { $type: 'checkbox',name : 'status' }
                ]
@@ -211,7 +211,7 @@ define(
            fields: 
              [
                { name: 'uid',tooltip: "Use '*' for a catchall address."},
-               { $type: 'multivalued', name: 'postfixmaildestination'},
+               { $type: 'multivalued', name: 'postfixmailaddress'},
                { $type: 'checkbox',name : 'status' }
              ]
          }
