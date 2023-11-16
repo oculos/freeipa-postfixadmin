@@ -112,7 +112,7 @@ define(
             {
               name: 'uid'
              },
-            'postfixmaildestination',
+            'postfixmailaddress',
             {
                $type: 'boolean_status',name : 'status', label: '@i18n:status.label',
                formatter: {
@@ -200,7 +200,7 @@ define(
              fields: 
                [
                   { name: 'postfixmailalias', read_only: true, label: "Alias"},
-                  { $type: 'multivalued', name: 'postfixmailaddress'},
+                  { $type: 'multivalued', name: 'postfixmailaddress', label: "Mailbox"},
                   //  { $type: 'password', name: 'userpassword', readonly: true},
                   { $type: 'checkbox',name : 'status' }
                ]
