@@ -463,6 +463,8 @@ class user_create_mailbox(LDAPUpdate):
     def pre_callback(self, ldap, dn, entry_attrs, attrs_list, *keys, **options):
         config = ldap.find_entry_by_attr('uid','config','postfixConfig')
         found_user = ldap.get_entry(dn)
+        
+        
         if 'postfixMailAddress' not in found_user:
             address = found_user['uid'][0]+'@'+config['defaultDomain'][0]
             exists = None
@@ -472,8 +474,11 @@ class user_create_mailbox(LDAPUpdate):
                pass
             if exists:
                 raise errors.ValidationError(name='mailbox', error=_('The e-mail address already exists.'))
-            
+            entry_attrs['objectclass'] = found_user['objectclass']
+            entry_attrs['objectclass'].extend(['postfixMailBox'])
             entry_attrs['postfixMailAddress'] = found_user['uid'][0]+'@'+config['defaultDomain'][0]
+           
+          
         return dn
         
 @register()
