@@ -52,13 +52,21 @@ define(
 
   exp.list_of_domains_spec =  {
     name: 'domain',
-    facet_groups: ['settings', 'mailboxesfacetgroup','aliasesfacetgroup','virtualdomainsfacetgroup'],
+    facet_groups: ['settings','mailboxesfacetgroup','aliasesfacetgroup','virtualdomainsfacetgroup'],
     facets: [
       {
+        
         $type: 'search',
         columns:
           [
-            'cn'
+            { name: 'cn'},
+            { name: 'domainquota'},
+            {
+               $type: 'boolean_status',name : 'status', label: '@i18n:status.label',
+               formatter: {
+                 $type: 'boolean_status',
+                          }
+            }
           ]
       },
       {
@@ -150,7 +158,8 @@ define(
        [
              {
                name: 'cn',
-             }
+             },
+              { $type: 'checkbox',name : 'status' }
            ]
        }
   }

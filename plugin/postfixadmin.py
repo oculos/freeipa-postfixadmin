@@ -27,12 +27,12 @@ class domain(LDAPObject):
     """
     object_name = _('postfix configuration')
     default_attributes = [
-        'cn'
+        'cn','domainQuota','status'
     ]
     container_dn = DN(('cn', 'postfixadmin'), ('cn', 'mailserver'), ('cn', 'etc'))
     permission_filter_objectclasses = ["postfixDomain"]
     object_class = ['postfixDomain']
-    search_attributes = [ 'cn' ]
+    search_attributes = [ 'cn','domainQuota','status' ]
     label = _('Domains')
     label_singular = _('Domain')
     managed_permissions = {
@@ -43,7 +43,7 @@ class domain(LDAPObject):
                'replaces_global_anonymous_aci': True,
                'ipapermright': {'read', 'search', 'compare'},
                'ipapermdefaultattr': {
-                   'cn', 'objectclass','postfixDomain'
+                   'cn', 'objectclass','postfixDomain','status','isBackupMx','domainQuota'
                }
            }
            }
@@ -204,8 +204,7 @@ class mailbox_mod(LDAPUpdate):
     
         sn = entry_attrs['sn'] if 'sn' in entry_attrs else attrs['sn'][0]
         givenName = entry_attrs['givenName'] if 'givenName' in entry_attrs else attrs['givenName'][0]
-        print (sn)
-        print (givenName)
+
         entry_attrs['cn'] = givenName+' '+sn
 
         return dn
