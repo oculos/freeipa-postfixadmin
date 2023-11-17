@@ -38,7 +38,7 @@ class domain(LDAPObject):
     managed_permissions = {
            'System: Read Domain': {
               
-               'ipapermbindruletype': 'anonymous',
+               'ipapermbindruletype': 'all',
                'ipapermtarget': DN(('cn','postfixadmin'),('cn', 'mailserver'), ('cn', 'etc'),api.env.basedn),
                #'replaces_global_anonymous_aci': True,
                'ipapermright': {'read', 'search', 'compare'},
