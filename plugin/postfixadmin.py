@@ -27,7 +27,7 @@ class domain(LDAPObject):
     """
     object_name = _('postfix configuration')
     default_attributes = [
-        'cn','domainQuota','status'
+        'cn','domainQuota','status','isBackupMx','maxAliases'
     ]
     container_dn = DN(('cn', 'postfixadmin'), ('cn', 'mailserver'), ('cn', 'etc'))
     permission_filter_objectclasses = ["postfixDomain"]
@@ -36,15 +36,16 @@ class domain(LDAPObject):
     label = _('Domains')
     label_singular = _('Domain')
     managed_permissions = {
-           'System: Read Domain Data': {
+           'System: Read Domain': {
               
-               'ipapermbindruletype': 'all',
-               'ipapermtarget': DN( ('cn', 'postfixadmin'),('cn', 'mailserver'), ('cn', 'etc')),
-               'replaces_global_anonymous_aci': True,
+               'ipapermbindruletype': 'anonymous',
+               'ipapermtarget': DN(('cn','postfixadmin'),('cn', 'mailserver'), ('cn', 'etc'),api.env.basedn),
+               #'replaces_global_anonymous_aci': True,
                'ipapermright': {'read', 'search', 'compare'},
                'ipapermdefaultattr': {
-                   'cn', 'objectclass','postfixDomain','status','isBackupMx','domainQuota'
-               }
+                   'cn', 'objectclass' ,'status','isBackupMx','domainQuota','maxAliases'
+               },
+               'default_privileges': {'Postfixadmin Readers'}
            }
            }
 
