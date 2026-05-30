@@ -1,7 +1,7 @@
 #! /bin/bash
 
 cp config/70-postfixadmin.* /usr/share/ipa/updates/.
-cp plugin/postfixadmin.py /usr/lib/python3.9/site-packages/ipaserver/plugins/.
+cp plugin/postfixadmin.py /usr/lib/python3.14/site-packages/ipaserver/plugins/.
 mkdir -p /usr/share/ipa/ui/js/plugins/postfixadmin
 cp ui/postfixadmin.js /usr/share/ipa/ui/js/plugins/postfixadmin/postfixadmin.js
 

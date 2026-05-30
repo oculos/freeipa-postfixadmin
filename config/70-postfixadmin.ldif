@@ -40,6 +40,13 @@ attributetypes: ( 1.3.6.1.4.1.60062.2.10 NAME 'defaultDomain'
   SUBSTR caseIgnoreSubstringsMatch
   SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 -
+attributetypes: ( 1.3.6.1.4.1.60062.2.11 NAME 'postfixPasswordChanged'
+  DESC 'Date of last password change for mailbox'
+  EQUALITY generalizedTimeMatch
+  ORDERING generalizedTimeOrderingMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+  SINGLE-VALUE )
+-
 objectclasses: ( 1.3.6.1.4.1.60062.1.1
   NAME 'postfixDomain' SUP top STRUCTURAL
   MUST ( cn )
@@ -53,7 +60,7 @@ objectclasses: ( 1.3.6.1.4.1.60062.1.2
 -
 objectclasses: ( 1.3.6.1.4.1.60062.1.3
   NAME 'postfixMailBox' SUP person STRUCTURAL
-  MAY ( uid $ cn $ status $ postfixMailAddress $ mailQuota $ userPassword $ givenName $ sn $ displayName)
+  MAY ( uid $ cn $ status $ postfixMailAddress $ mailQuota $ userPassword $ givenName $ sn $ displayName $ postfixPasswordChanged )
   X-ORIGIN 'A postfix Mailbox' )
 -
 objectclasses: ( 1.3.6.1.4.1.60062.1.4
