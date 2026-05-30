@@ -208,8 +208,13 @@ class mailbox_mod(LDAPUpdate):
 
         entry_attrs['cn'] = givenName+' '+sn
 
-        return dn
+        # If password is being changed, update the timestamp
+        if 'userpassword' in entry_attrs or 'userPassword' in entry_attrs:
+            # Format: YYYYMMDDHHMMSSZ (GeneralizedTime format)
+            timestamp = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%SZ')
+            entry_attrs['postfixPasswordChanged'] = timestamp
 
+        return dn
 
 
 @register()
